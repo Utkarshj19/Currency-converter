@@ -1,0 +1,126 @@
+import java.util.Scanner;
+
+public class CurrencyConverter {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Get user input
+        System.out.print("Enter the amount: ");
+        double amount = scanner.nextDouble();
+        System.out.print("Enter the currency you have (INR, USD, GBP, EUR): ");
+        String fromCurrency = scanner.next().toUpperCase();
+        System.out.print("Enter the currency you want to convert to (INR, USD, GBP, EUR, or ALL): ");
+        String toCurrency = scanner.next().toUpperCase();
+
+        // Convert amount
+        if (toCurrency.equals("ALL")) {
+            printAllConversions(amount, fromCurrency);
+        } else {
+            double convertedAmount = convertCurrency(amount, fromCurrency, toCurrency);
+            // Display result
+            System.out.println(amount + " " + fromCurrency + " = " + convertedAmount + " " + toCurrency);
+        }
+
+        scanner.close();
+    }
+
+    private static double convertCurrency(double amount, String fromCurrency, String toCurrency) {
+        double convertedAmount = 0.0;
+
+        switch (fromCurrency) {
+            case "INR":
+                convertedAmount = convertFromINR(amount, toCurrency);
+                break;
+            case "USD":
+                convertedAmount = convertFromUSD(amount, toCurrency);
+                break;
+            case "GBP":
+                convertedAmount = convertFromGBP(amount, toCurrency);
+                break;
+            case "EUR":
+                convertedAmount = convertFromEUR(amount, toCurrency);
+                break;
+            default:
+                System.out.println("Invalid currency!");
+        }
+
+        return convertedAmount;
+    }
+
+    private static void printAllConversions(double amount, String fromCurrency) {
+        System.out.println(amount + " " + fromCurrency + " in other currencies:");
+        if (!fromCurrency.equals("USD")) {
+            System.out.println("USD: " + convertCurrency(amount, fromCurrency, "USD"));
+        }
+        if (!fromCurrency.equals("GBP")) {
+            System.out.println("GBP: " + convertCurrency(amount, fromCurrency, "GBP"));
+        }
+        if (!fromCurrency.equals("EUR")) {
+            System.out.println("EUR: " + convertCurrency(amount, fromCurrency, "EUR"));
+        }
+        if (!fromCurrency.equals("INR")) {
+            System.out.println("INR: " + convertCurrency(amount, fromCurrency, "INR"));
+        }
+    }
+
+    private static double convertFromINR(double amount, String toCurrency) {
+        switch (toCurrency) {
+            case "INR":
+                return amount;
+            case "USD":
+                return amount * 0.012024; // 1 INR = 0.012024 USD
+            case "GBP":
+                return amount * 0.009412; // 1 INR = 0.009412 GBP
+            case "EUR":
+                return amount * 0.011053; // 1 INR = 0.011053 EUR
+            default:
+                System.out.println("Invalid currency!");
+                return 0.0;
+        }
+    }
+
+    // Convert from USD
+    private static double convertFromUSD(double amount, String toCurrency) {
+        switch (toCurrency) {
+            case "INR":
+                return amount / 0.012024; // 1 USD = 83.164962 INR
+            case "GBP":
+                return amount * 0.782474; // 1 USD = 0.782474 GBP
+            case "EUR":
+                return amount * 0.919406; // 1 USD = 0.919406 EUR
+            default:
+                System.out.println("Invalid currency!");
+                return 0.0;
+        }
+    }
+
+    // Convert from GBP
+    private static double convertFromGBP(double amount, String toCurrency) {
+        switch (toCurrency) {
+            case "INR":
+                return amount / 0.009412; // 1 GBP = 106.245779 INR
+            case "USD":
+                return amount / 0.782474; // 1 GBP = 1.27870 USD
+            case "EUR":
+                return amount * 1.17474; // 1 GBP = 1.17474 EUR
+            default:
+                System.out.println("Invalid currency!");
+                return 0.0;
+        }
+    }
+
+    // Convert from EUR
+    private static double convertFromEUR(double amount, String toCurrency) {
+        switch (toCurrency) {
+            case "INR":
+                return amount / 0.011053; // 1 EUR = 90.471668 INR
+            case "USD":
+                return amount / 0.919406; // 1 EUR = 1.08756 USD
+            case "GBP":
+                return amount / 1.17474; // 1 EUR = 0.85124 GBP
+            default:
+                System.out.println("Invalid currency!");
+                return 0.0;
+        }
+    }
+}
